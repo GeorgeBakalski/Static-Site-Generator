@@ -15,7 +15,7 @@ def generate_page(from_path, template_path, dest_path, basepath):
     content_template = template_with_title.replace( "{{ Content }}", html_string)
     href_template = content_template.replace( 'href="/', f'href="{basepath}')
     final_template = href_template.replace( 'src="/', f'src="{basepath}')
-    
+    print("BASEPATH DEBUG:", basepath)
     dir = os.path.dirname(dest_path)
     if dir:
         os.makedirs(dir, exist_ok= True)
