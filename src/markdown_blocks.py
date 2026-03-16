@@ -155,3 +155,11 @@ def heading_1_to_6(block):
         return "h5"
     if block.startswith("###### "):
         return "h6"
+    
+def extract_title(markdown):
+    if not markdown.startswith("# "):
+        raise Exception("There should be a title")
+    blocks = markdown_to_blocks(markdown)
+    for block in blocks:
+        if block.startswith("# "):
+            return block[2:].rstrip()

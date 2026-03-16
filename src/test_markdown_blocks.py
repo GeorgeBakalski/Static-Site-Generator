@@ -1,5 +1,5 @@
 import unittest
-from markdown_blocks import markdown_to_blocks, block_to_block_type, BlockType, markdown_to_html_node
+from markdown_blocks import markdown_to_blocks, block_to_block_type, BlockType, markdown_to_html_node, extract_title
 
 class TestTextNode(unittest.TestCase):
     def test_markdown_to_blocks(self):
@@ -216,3 +216,54 @@ this is **just** _code_
         html,
         "<div><h1>This is <b>bolded</b> heading</h1><h4>text in another heading</h4><p>This is <b>bolded</b> paragraph</p><blockquote>This is a\nquote with <i>italic</i> text\nand <code>code</code> here</blockquote><pre><code>this is **just** _code_\n</code></pre><ul><li>this is</li><li>an unordered <b>list</b></li></ul><ol><li>this is</li><li>an <i>ordered</i> list</li></ol></div>",
     )
+        
+def test_extract_title(self):
+    md = """
+# This is **bolded** heading
+
+#### text in another heading
+
+This is **bolded** paragraph
+
+> This is a 
+> quote with _italic_ text 
+> and `code` here
+
+```
+this is **just** _code_
+```
+
+- this is 
+- an unordered **list**
+
+1. this is
+2. an _ordered_ list
+
+"""    
+    title =  extract_title(md)
+    self.assertEqual( title, "This is **bolded** heading")
+
+def test_extract_no_title(self):
+    md = """
+
+#### text in another heading
+
+This is **bolded** paragraph
+
+> This is a 
+> quote with _italic_ text 
+> and `code` here
+
+```
+this is **just** _code_
+```
+
+- this is 
+- an unordered **list**
+
+1. this is
+2. an _ordered_ list
+
+"""    
+    with self.assertRaises(Exception):
+        extract_title(md)
